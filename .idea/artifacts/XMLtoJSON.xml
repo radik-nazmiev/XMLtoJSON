@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="XMLtoJSON">
+    <output-path>$PROJECT_DIR$/out/artifacts/XMLtoJSON</output-path>
+    <root id="archive" name="XMLtoJSON.war" />
+  </artifact>
+</component>

@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="XMLtoJSON:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>XMLtoJSON</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="XMLtoJSON-1.0.war">
+      <element id="artifact" artifact-name="XMLtoJSON:war exploded" />
+    </root>
+  </artifact>
+</component>
