@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 @WebServlet(name = "rebuild", value = "/rebuild")
 @MultipartConfig
@@ -17,11 +19,22 @@ public class Rebuild extends HttpServlet {
         Part filePart = request.getPart("file");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         InputStream fileContent = filePart.getInputStream();
-        InputStreamReader inputStreamReader = new InputStreamReader(fileContent);
+//        InputStreamReader inputStreamReader = new InputStreamReader(fileContent);
 
-        JSONObject json = XML.toJSONObject(inputStreamReader);
-
+//        JSONObject json = XML.toJSONObject(inputStreamReader);
+//
         PrintWriter out = response.getWriter();
-        out.println(json);
+//        out.println(json);
+
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+
+        try{
+            SAXParser saxParser = factory.newSAXParser();
+            SaxXmlHandler handler = new SaxXmlHandler(out);
+            saxParser.parse(fileContent, handler);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }
