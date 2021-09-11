@@ -13,6 +13,8 @@ import javax.xml.parsers.SAXParserFactory;
 public class Rebuild extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
         Part filePart = request.getPart("file");
         InputStream fileContent = filePart.getInputStream();
         PrintWriter out = response.getWriter();
@@ -37,6 +39,7 @@ public class Rebuild extends HttpServlet {
         }
         catch (Exception ex){
             ex.printStackTrace();
+            out.println("Ошибка при обработке XML");
         }
     }
 }
