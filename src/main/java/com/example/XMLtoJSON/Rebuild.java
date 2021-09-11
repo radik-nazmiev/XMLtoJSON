@@ -1,8 +1,5 @@
 package com.example.XMLtoJSON;
 
-import org.json.JSONObject;
-import org.json.XML;
-
 import java.io.*;
 import java.nio.file.Paths;
 import javax.servlet.ServletException;
@@ -17,20 +14,25 @@ public class Rebuild extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Part filePart = request.getPart("file");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         InputStream fileContent = filePart.getInputStream();
-//        InputStreamReader inputStreamReader = new InputStreamReader(fileContent);
-
-//        JSONObject json = XML.toJSONObject(inputStreamReader);
-//
         PrintWriter out = response.getWriter();
-//        out.println(json);
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
 
         try{
             SAXParser saxParser = factory.newSAXParser();
-            SaxXmlHandler handler = new SaxXmlHandler(out);
+            SaxXmlHandler handler = new SaxXmlHandler();
+            handler.setSaxHmlHandlerListener(new SaxHmlHandlerListener() {
+                @Override
+                public void onComplete(String json) {
+                    out.println(json);
+                }
+
+                @Override
+                public void onError() {
+                    out.println("Ошибка при обработке XML");
+                }
+            });
             saxParser.parse(fileContent, handler);
         }
         catch (Exception ex){

@@ -1,5 +1,7 @@
 package com.example.XMLtoJSON;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -11,12 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SaxXmlHandler extends DefaultHandler {
-    private PrintWriter out;
     private StringBuilder json = new StringBuilder();
     private ArrayList<XmlElement> elements = new ArrayList<>();
+    private SaxHmlHandlerListener saxHmlHandlerListener;
 
-    SaxXmlHandler(PrintWriter _out){
-        out = _out;
+    public void setSaxHmlHandlerListener(SaxHmlHandlerListener _saxHmlHandlerListener){
+        saxHmlHandlerListener = _saxHmlHandlerListener;
     }
 
     @Override
@@ -38,7 +40,20 @@ public class SaxXmlHandler extends DefaultHandler {
             values.add(format.format(xmlElement.value).replace(",", "."));
         });
         String finalString = String.format(json.toString(), values.toArray());
-        out.println(finalString);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Object obj = mapper.readValue(finalString, Object.class);
+            finalString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            if(saxHmlHandlerListener != null){
+                saxHmlHandlerListener.onError();
+            }
+        }
+
+        if(saxHmlHandlerListener != null){
+            saxHmlHandlerListener.onComplete(finalString);
+        }
     }
 
     @Override

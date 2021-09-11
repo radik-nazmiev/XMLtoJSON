@@ -14,7 +14,9 @@
           <element id="module-output" name="XMLtoJSON" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.json:json:20210307" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.5" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.5" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.5" />
         </element>
       </element>
       <element id="directory" name="META-INF">
